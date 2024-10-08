@@ -73,7 +73,7 @@ app.post('/api/accounts', upload.single('passportCopy'), async (req, res) => {
     });
 
     await account.save();
-    res.status(201).json({ message: 'Paskyra sėkmingai sukurta' });
+    res.status(201).json({ message: 'Paskyra sėkmingai sukurta!' });
   } catch (error) {
     res.status(500).json({ message: 'Klaida kuriant paskyrą.', error });
   }
