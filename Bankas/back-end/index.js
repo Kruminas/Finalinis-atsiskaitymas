@@ -44,24 +44,63 @@ const validatePersonalCode = (personalCode) => {
   return regex.test(personalCode);
 };
 
-app.post('/api/accounts', upload.single('passportCopy'), async (req, res) => {
-  const { firstName, lastName, accountNumber, personalCode } = req.body;
-
-  if (!req.file) {
-    return res.status(400).json({ message: 'Failas neįkeltas' });
-  }
-
-  if (!validatePersonalCode(personalCode)) {
-    return res.status(400).json({ message: 'Asmens kodas turi būti sudarytas iš 11 skaitmenų ir jame turi būti tik skaičiai.' });
+app.post('/api/accounts/:id/add-funds', async (req, res) => {
+  const { amount } = req.body;
+  
+  if (amount <= 0) {
+    return res.status(400).json({ message: 'Pridėjimo suma turi būti teigiama.' });
   }
 
   try {
-    const existingAccount = await Account.findOne({ personalCode });
-    if (existingAccount) {
-      return res.status(400).json({ message: 'Asmens kodas jau egzistuoja toks.' });
+    const account = await Account.findById(req.params.id);
+    if (!account) {
+      return res.status(404).json({ message: 'Paskyra nerasta.' });
     }
 
-    const account = new Account({
+    account.balance += amount;
+    await account.save();
+
+    res.status(200).json({ message: 'Lėšos sėkmingai pridėtos', balance: account.balance });
+  } catch (error) {
+    res.status(500).json({ message: 'Klaida pridėdant lėšas.', error });
+  }
+});
+
+app.post('/api/accounts/:id/withdraw-funds', async (req, res) => {
+  const { amount } = req.body;
+
+  if (amount <= 0) {
+    return res.status(400).json({ message: 'Nuskaitymo suma turi būti teigiama.' });
+  }
+
+  try {
+    const account = await Account.findById(req.params.id);
+    if (!account) {
+      return res.status(404).json({ message: 'Paskyra nerasta.' });
+    }
+
+    if (account.balance < amount) {
+      return res.status(400).json({ message: 'Nepakanka lėšų.' });
+    }
+
+    account.balance -= amount;
+    await account.save();
+
+    res.status(200).json({ message: 'Lėšos sėkmingai nuskaitytos', balance: account.balance });
+  } catch (error) {
+    res.status(500).json({ message: 'Klaida nuskaitymo metu.', error });
+  }
+});
+app.post('/api/accounts', upload.single('passportCopy'), async (req, res) => {
+  const { firstName, lastName, accountNumber, personalCode } = req.body;
+
+  // Validate personal code
+  if (!validatePersonalCode(personalCode)) {
+    return res.status(400).json({ message: 'Asmens kodas turi būti 11 skaitmenų ilgio.' });
+  }
+
+  try {
+    const newAccount = new Account({
       firstName,
       lastName,
       accountNumber,
@@ -72,22 +111,60 @@ app.post('/api/accounts', upload.single('passportCopy'), async (req, res) => {
       },
     });
 
-    await account.save();
-    res.status(201).json({ message: 'Paskyra sėkmingai sukurta!' });
+    await newAccount.save();
+    res.status(201).json({ message: 'Sąskaita sėkmingai sukurta.' });
   } catch (error) {
-    res.status(500).json({ message: 'Klaida kuriant paskyrą.', error });
+    // Handle unique constraint error for personalCode
+    if (error.code === 11000) {
+      return res.status(400).json({ message: 'Sąskaita su tokiu asmens kodu jau egzistuoja.' });
+    }
+    res.status(500).json({ message: 'Klaida kuriant sąskaitą.', error });
   }
 });
 
+
 app.get('/api/accounts', async (req, res) => {
   try {
-    const accounts = await Account.find();
+    // Fetch and sort accounts by last name
+    const accounts = await Account.find().sort({ lastName: 1 }); // Sort by lastName in ascending order
     res.status(200).json(accounts);
   } catch (error) {
-    res.status(500).json({ message: 'Klaida gaunant paskyras', error });
+    res.status(500).json({ message: 'Error fetching accounts', error });
+  }
+});
+
+app.get('/api/accounts/:id', async (req, res) => {
+  try {
+      const account = await Account.findById(req.params.id);
+      if (!account) {
+          return res.status(404).json({ message: 'Account not found' });
+      }
+      res.status(200).json(account);
+  } catch (error) {
+      res.status(500).json({ message: 'Error fetching account details', error });
+  }
+});
+
+app.delete('/api/accounts/:id', async (req, res) => {
+  try {
+    const account = await Account.findById(req.params.id);
+    if (!account) {
+      return res.status(404).json({ message: 'Account not found' });
+    }
+    
+    // Check if balance is greater than 0
+    if (account.balance > 0) {
+      return res.status(400).json({ message: 'Negalite ištrinti sąskaitos, nes balansas yra didesnis nei 0 EUR.' });
+    }
+    
+    await Account.deleteOne({ _id: req.params.id });
+    res.status(200).json({ message: 'Account deleted successfully' });
+  } catch (error) {
+    res.status(500).json({ message: 'Error deleting account', error });
   }
 });
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
+

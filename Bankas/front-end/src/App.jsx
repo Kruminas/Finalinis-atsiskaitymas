@@ -1,6 +1,6 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Header from './components/Header';
-import Home from './pages/Home';
+// import Home from './pages/Home';
 import AddFunds from './pages/AddFunds.jsx';
 import WithdrawFunds from './pages/WithdrawFunds.jsx';
 import AddAccount from './pages/AddAccount.jsx'
@@ -14,9 +14,9 @@ function App() {
       <Header />
       <Routes>
         <Route path="/AccountList" element={<AccountList />} />
-        <Route path="/AccountList" element={<Home />} />
-        <Route path="/AddFunds" element={<AddFunds />} />
-        <Route path="/WithdrawFunds" element={<WithdrawFunds />} />
+        {/* <Route path="/AccountList" element={<Home />} /> */}
+        <Route path="/accounts/:id/add-funds" element={<AddFunds />} />
+        <Route path="/accounts/:id/withdraw-funds" element={<WithdrawFunds />} />
         <Route path="AddAccount" element={<AddAccount />}/>
       </Routes>
     </BrowserRouter>

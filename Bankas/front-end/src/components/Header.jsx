@@ -12,12 +12,12 @@ function Header() {
           <li>
             <Link to="/AccountList">Sąskaitų sąrašas</Link>
           </li>
-          <li>
+          {/* <li>
           <Link to="/AddFunds">Pridėti lėšas</Link>
           </li>
           <li>
             <Link to="/WithdrawFunds">Nuskaičiuoti lėšas</Link>
-          </li>
+          </li> */}
           <li>
             <Link to="/AddAccount">Sąskaitos sukūrimas</Link>
           </li>
