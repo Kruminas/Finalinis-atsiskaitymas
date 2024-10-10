@@ -11,13 +11,13 @@ function WithdrawFunds() {
     try {
       const response = await fetch(`http://localhost:3000/api/accounts/${id}`);
       if (!response.ok) {
-        throw new Error(`Failed to fetch account details: ${response.status}`);
+        throw new Error(`Nepavyko gauti paskyros informacijos: ${response.status}`);
       }
       const data = await response.json();
       setAccount(data);
     } catch (error) {
-      console.error('Error fetching account details:', error);
-      alert('Error fetching account details. Please check the console for more information.');
+      console.error('Klaida gaunant išsamią paskyros informaciją:', error);
+      alert('Klaida gaunant išsamią paskyros informaciją. Norėdami gauti daugiau informacijos, patikrinkite konsolę.');
     }
   };
 
@@ -49,7 +49,7 @@ function WithdrawFunds() {
         navigate('/AccountList');
       }
     } catch (error) {
-      console.error('Error withdrawing funds:', error);
+      console.error('Klaida išimant lėšas:', error);
     }
   };
 
@@ -74,7 +74,7 @@ function WithdrawFunds() {
           alert(data.message);
         }
       } catch (error) {
-        console.error('Error deleting account:', error);
+        console.error('Klaida ištrinant paskyrą:', error);
       }
     }
   };

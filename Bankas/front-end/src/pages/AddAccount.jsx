@@ -69,8 +69,8 @@ function AddAccount() {
         alert(errorData.message);
       }
     } catch (error) {
-      console.error('Error:', error);
-      alert('Error saving account data');
+      console.error('Klaida:', error);
+      alert('Išsaugant paskyros duomenis įvyko klaida');
     }
   };
 

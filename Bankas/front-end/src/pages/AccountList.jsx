@@ -8,13 +8,13 @@ function AccountList() {
     try {
       const response = await fetch('http://localhost:3000/api/accounts');
       if (!response.ok) {
-        throw new Error('Failed to fetch accounts');
+        throw new Error('Nepavyko gauti paskyrų');
       }
       const data = await response.json();
       setAccounts(data);
     } catch (error) {
-      console.error('Error fetching accounts:', error);
-      alert('Error fetching accounts. Please check the console for more information.');
+      console.error('Klaida gaunant paskyras:', error);
+      alert('Klaida gaunant paskyras. Norėdami gauti daugiau informacijos, patikrinkite konsolę.');
     }
   };
 
@@ -34,7 +34,7 @@ function AccountList() {
           alert(data.message);
         }
       } catch (error) {
-        console.error('Error deleting account:', error);
+        console.error('Klaida ištrinant paskyrą:', error);
       }
     }
   };

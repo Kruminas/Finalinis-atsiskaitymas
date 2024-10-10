@@ -1,23 +1,33 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Header from './components/Header';
-// import Home from './pages/Home';
 import AddFunds from './pages/AddFunds.jsx';
 import WithdrawFunds from './pages/WithdrawFunds.jsx';
-import AddAccount from './pages/AddAccount.jsx'
+import AddAccount from './pages/AddAccount.jsx';
 import AccountList from './pages/AccountList';
+import LoginPage from './pages/LoginPage';
 import './App.css';
-
+import { useState } from 'react';
 
 function App() {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  const handleLogin = () => {
+    setIsLoggedIn(true);
+  };
+
   return (
     <BrowserRouter>
-      <Header />
+      <Header isLoggedIn={isLoggedIn} />
       <Routes>
-        <Route path="/AccountList" element={<AccountList />} />
-        {/* <Route path="/AccountList" element={<Home />} /> */}
-        <Route path="/accounts/:id/add-funds" element={<AddFunds />} />
-        <Route path="/accounts/:id/withdraw-funds" element={<WithdrawFunds />} />
-        <Route path="AddAccount" element={<AddAccount />}/>
+        <Route path="/" element={<LoginPage onLogin={handleLogin} />} />
+        {isLoggedIn && (
+          <>
+            <Route path="/AccountList" element={<AccountList />} />
+            <Route path="/accounts/:id/add-funds" element={<AddFunds />} />
+            <Route path="/accounts/:id/withdraw-funds" element={<WithdrawFunds />} />
+            <Route path="/AddAccount" element={<AddAccount />} />
+          </>
+        )}
       </Routes>
     </BrowserRouter>
   );

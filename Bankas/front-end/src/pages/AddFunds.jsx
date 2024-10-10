@@ -3,7 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 
 function AddFunds() {
   const { id } = useParams();
-  const [account, setAccount] = useState(null); // Account details state
+  const [account, setAccount] = useState(null);
   const [amount, setAmount] = useState('');
   const navigate = useNavigate();
 
@@ -11,13 +11,13 @@ function AddFunds() {
     try {
       const response = await fetch(`http://localhost:3000/api/accounts/${id}`);
       if (!response.ok) {
-        throw new Error(`Failed to fetch account details: ${response.status}`);
+        throw new Error(`Nepavyko gauti paskyros informacijos: ${response.status}`);
       }
       const data = await response.json();
       setAccount(data);
     } catch (error) {
-      console.error('Error fetching account details:', error);
-      alert('Error fetching account details. Please check the console for more information.');
+      console.error('Klaida gaunant išsamią paskyros informaciją:', error);
+      alert('Klaida gaunant išsamią paskyros informaciją. Norėdami gauti daugiau informacijos, patikrinkite konsolę.');
     }
   };
 
@@ -37,7 +37,7 @@ function AddFunds() {
         navigate('/AccountList');
       }
     } catch (error) {
-      console.error('Error adding funds:', error);
+      console.error('Klaida pridedant lėšų:', error);
     }
   };
 
