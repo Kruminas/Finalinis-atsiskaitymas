@@ -2,12 +2,11 @@ import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 
 function AddFunds() {
-  const { id } = useParams(); // Get account ID from URL
+  const { id } = useParams();
   const [account, setAccount] = useState(null); // Account details state
   const [amount, setAmount] = useState('');
   const navigate = useNavigate();
 
-  // Fetch account details by ID
   const fetchAccountDetails = async () => {
     try {
       const response = await fetch(`http://localhost:3000/api/accounts/${id}`);
@@ -22,7 +21,6 @@ function AddFunds() {
     }
   };
 
-  // Handle adding funds
   const handleAddFunds = async () => {
     try {
       const response = await fetch(`http://localhost:3000/api/accounts/${id}/add-funds`, {
@@ -36,14 +34,13 @@ function AddFunds() {
         alert(data.message);
       } else {
         alert('Lėšos sėkmingai pridėtos.');
-        navigate('/AccountList'); // Redirect to /AccountList
+        navigate('/AccountList');
       }
     } catch (error) {
       console.error('Error adding funds:', error);
     }
   };
 
-  // Fetch account details when the component mounts
   useEffect(() => {
     fetchAccountDetails();
   }, []);

@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom';
 function AccountList() {
   const [accounts, setAccounts] = useState([]);
 
-  // Fetch accounts when the component mounts
   const fetchAccounts = async () => {
     try {
       const response = await fetch('http://localhost:3000/api/accounts');
@@ -19,7 +18,6 @@ function AccountList() {
     }
   };
 
-  // Handle account deletion
   const handleDeleteAccount = async (id) => {
     const confirmDelete = window.confirm('Ar tikrai norite ištrinti šią sąskaitą?');
     if (confirmDelete) {
@@ -30,10 +28,10 @@ function AccountList() {
 
         if (response.ok) {
           alert('Sąskaita sėkmingai ištrinta.');
-          fetchAccounts(); // Refresh the account list
+          fetchAccounts();
         } else {
           const data = await response.json();
-          alert(data.message); // Show the error message from the server
+          alert(data.message);
         }
       } catch (error) {
         console.error('Error deleting account:', error);
@@ -72,7 +70,6 @@ function AccountList() {
                 <Link to={`/accounts/${account._id}/withdraw-funds`}>
                   <button>Nuskaityti lėšas</button>
                 </Link>
-                {/* Add Delete Button */}
                 <button onClick={() => handleDeleteAccount(account._id)} style={{ marginLeft: '10px', backgroundColor: 'red', color: 'white' }}>
                   Ištrinti
                 </button>
