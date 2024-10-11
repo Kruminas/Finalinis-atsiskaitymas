@@ -40,3 +40,11 @@
 .read-the-docs {
   color: #888;
 }
+.LoginPage {
+  background-image: url('https://images.wallpaperscraft.com/image/single/stairs_dark_bw_126426_1920x1080.jpg');
+  height: 95vh;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-attachment: fixed;
+  background-size: cover;
+}

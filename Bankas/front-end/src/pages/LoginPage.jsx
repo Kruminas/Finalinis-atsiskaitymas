@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-
+import '../../src/index.css'
 function LoginPage({ onLogin }) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -39,7 +39,7 @@ function LoginPage({ onLogin }) {
   };
 
   return (
-    <div>
+    <div className='LoginPage'>
       <h1>Login</h1>
       {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
       <form onSubmit={handleLogin}>

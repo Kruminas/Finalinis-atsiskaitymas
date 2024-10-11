@@ -16,6 +16,9 @@ const Header = ({ isLoggedIn }) => {
             <li>
               <Link to="/AddAccount">Sąskaitos sukūrimas</Link>
             </li>
+            <li style={{color: 'red', position: 'relative', left: '260px'}}>
+            <Link style={{color: 'red'}} to="/">Log Out</Link>
+            </li>
             </div>
           </>
         )}
