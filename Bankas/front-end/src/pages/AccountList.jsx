@@ -46,12 +46,13 @@ function AccountList() {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
       <h1>Sąskaitų sąrašas</h1>
-      <table style={{ margin: '20px auto', borderCollapse: 'collapse', width: '80%' }}>
+      <table style={{ margin: '20px auto', borderCollapse: 'collapse', width: '110%' }}>
         <thead>
           <tr>
             <th>Vardas</th>
             <th>Pavardė</th>
             <th>Sąskaitos numeris</th>
+            <th>Asmens kodas</th>
             <th>Balansas</th>
             <th style={{position: 'relative', right: '40px'}}>Veiksmai</th>
           </tr>
@@ -62,10 +63,11 @@ function AccountList() {
               <td>{account.firstName}</td>
               <td>{account.lastName}</td>
               <td>{account.accountNumber}</td>
-              <td>{account.balance.toFixed(2)} EUR</td>
+              <td>{account.personalCode}</td>
+              <td>{account.balance.toFixed(2)} € </td>
               <td>
                 <Link to={`/accounts/${account._id}/add-funds`}>
-                  <button>Pridėti lėšas</button>
+                  <button className='PridetiLesas'>Pridėti lėšas</button>
                 </Link>
                 <Link to={`/accounts/${account._id}/withdraw-funds`}>
                   <button>Nuskaityti lėšas</button>

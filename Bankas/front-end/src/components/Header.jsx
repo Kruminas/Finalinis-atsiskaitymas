@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import '../../src/App.css'
 
 const Header = ({ isLoggedIn }) => {
   const location = useLocation();
